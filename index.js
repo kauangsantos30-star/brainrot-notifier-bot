@@ -35,14 +35,9 @@ client.once('ready', () => {
     console.log(`✅ Bot logado como ${client.user.tag}`);
 });
 
-// Puxa o token das variáveis do Render para não ser cancelado de novo
-const TOKEN = process.env.DISCORD_TOKEN;
-if (TOKEN) {
-    client.login(TOKEN);
-} else {
-    console.log("❌ ERRO: Você ainda não colocou o DISCORD_TOKEN no Ambiente do Render!");
-}
+// PUXA O TOKEN DO RENDER (AMBIENTE)
+client.login(process.env.DISCORD_TOKEN);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => { console.log(`🚀 Online na porta ${PORT}`); });
 
