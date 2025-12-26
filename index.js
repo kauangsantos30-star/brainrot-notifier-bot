@@ -8,8 +8,19 @@ const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
 });
 
-// AQUI O SEU NOVO ID QUE VOCÊ MANDOU AGORA
 const CHANNEL_ID = '1454106662721028246'; 
+
+// TESTE AUTOMÁTICO AO LIGAR
+client.once('ready', async () => {
+    console.log(`✅ Bot logado como ${client.user.tag}`);
+    try {
+        const channel = await client.channels.fetch(CHANNEL_ID);
+        await channel.send("🚀 **O bot kauanu791 acabou de ligar e está pronto!**");
+        console.log("✅ Mensagem de teste enviada com sucesso!");
+    } catch (e) {
+        console.log("❌ Erro ao enviar teste inicial: " + e.message);
+    }
+});
 
 app.post('/webhook-brainrot', async (req, res) => {
     const { item, money, jobId, placeId } = req.body;
@@ -23,22 +34,16 @@ app.post('/webhook-brainrot', async (req, res) => {
                 { name: 'Money:', value: `$${money}`, inline: false },
                 { name: '\u200B', value: `[CLIQUE PARA ENTRAR](https://www.roblox.com/games/${placeId}?jobId=${jobId})`, inline: false }
             )
-            .setFooter({ text: 'kauanu791 • Filtro 5M+ | Hoje às ' + new Date().toLocaleTimeString('pt-BR') });
+            .setFooter({ text: 'kauanu791 • Filtro 5M+' });
 
         await channel.send({ embeds: [embed] });
-        res.status(200).send('Enviado!');
+        res.status(200).send('Enviado');
     } catch (error) {
-        console.error('Erro no canal:', error);
         res.status(500).send('Erro');
     }
 });
 
-client.once('ready', () => {
-    console.log(`✅ Bot logado como ${client.user.tag}`);
-});
-
 client.login(process.env.DISCORD_TOKEN);
-
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => { console.log(`🚀 Online na porta ${PORT}`); });
 
