@@ -8,16 +8,12 @@ const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
 });
 
-// ID do seu canal
 const CHANNEL_ID = '1321798544922054696'; 
 
 app.post('/webhook-brainrot', async (req, res) => {
     const { item, money, jobId, placeId } = req.body;
-
     try {
         const channel = await client.channels.fetch(CHANNEL_ID);
-        if (!channel) return res.status(404).send('Canal não encontrado');
-
         const embed = new EmbedBuilder()
             .setColor(0x9B59B6)
             .setTitle('💎 NOVO SECRET DETECTADO!')
@@ -29,9 +25,9 @@ app.post('/webhook-brainrot', async (req, res) => {
             .setFooter({ text: 'kauanu791 • Filtro 5M+ | Hoje às ' + new Date().toLocaleTimeString('pt-BR') });
 
         await channel.send({ embeds: [embed] });
-        res.status(200).send('Enviado com sucesso!');
+        res.status(200).send('Enviado!');
     } catch (error) {
-        res.status(500).send('Erro no servidor');
+        res.status(500).send('Erro');
     }
 });
 
@@ -39,11 +35,14 @@ client.once('ready', () => {
     console.log(`✅ Bot logado como ${client.user.tag}`);
 });
 
-// Segurança: Puxa o token das configurações do Render
-client.login(process.env.DISCORD_TOKEN);
+// Puxa o token das variáveis do Render para não ser cancelado de novo
+const TOKEN = process.env.DISCORD_TOKEN;
+if (TOKEN) {
+    client.login(TOKEN);
+} else {
+    console.log("❌ ERRO: Você ainda não colocou o DISCORD_TOKEN no Ambiente do Render!");
+}
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🚀 Porta: ${PORT}`);
-});
+app.listen(PORT, () => { console.log(`🚀 Online na porta ${PORT}`); });
 
