@@ -8,7 +8,8 @@ const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]
 });
 
-const CHANNEL_ID = '1321798544922054696'; 
+// AQUI O SEU NOVO ID QUE VOCÊ MANDOU AGORA
+const CHANNEL_ID = '1454106662721028246'; 
 
 app.post('/webhook-brainrot', async (req, res) => {
     const { item, money, jobId, placeId } = req.body;
@@ -27,6 +28,7 @@ app.post('/webhook-brainrot', async (req, res) => {
         await channel.send({ embeds: [embed] });
         res.status(200).send('Enviado!');
     } catch (error) {
+        console.error('Erro no canal:', error);
         res.status(500).send('Erro');
     }
 });
@@ -35,7 +37,6 @@ client.once('ready', () => {
     console.log(`✅ Bot logado como ${client.user.tag}`);
 });
 
-// PUXA O TOKEN DO RENDER (AMBIENTE)
 client.login(process.env.DISCORD_TOKEN);
 
 const PORT = process.env.PORT || 10000;
